@@ -110,62 +110,23 @@
 
 :root {
 
---background:#222222;
---background-alt:#151414;
---borders:#191a1d;
+--background:transparent;
+--background-alt:transparent;
+--borders:#828282;
 --one:#ae7c74;
 --two:#cdaba0;
 --three:#735651;
---text:#ddd;
+--text:#111;
 
 
 }
 
  
     .iframe-controls--desktop { position:fixed; top:0px; right:0px; z-index:999999999999;  text-shadow:none; box-shadow:none;}
-
-    ::-webkit-scrollbar { width:6px; }
-    ::-webkit-scrollbar-track { background:var(--background-alt); }
-    ::-webkit-scrollbar-thumb { background:var(--three); }
     
-    a { text-decoration:none; color:var(--two);}
-    
-    a:hover { transition:all 2s linear; cursor:pointer; }
-    
-    small, big { font-size:12.5px; }
-    
-    img { max-width:100%; height:auto; }
-    
-    u { background:var(--three); padding:0 5px; outline:none; border:none; text-decoration:none; font-style:italic; color:var(--background); }
-    
-    blockquote { margin:10px; padding:0px; padding-left:15px; border-left:2px solid var(--two); }
-    
-    blockquote blockquote { padding-left:15px; margin-left:0px; border-color:var(--three); }
-    
-    #s-m-t-tooltip { max-width:200px; margin:15px; text-align:center; font-weight:500; text-transform:lowercase; padding:3px 15px; z-index:999999999999999999999;color:var(--two); border-radius:25px; background:var(--borders); font-size:12.5px;}
-    
-    h1, .title { font-family:"Playfair Display"; text-align:center; font-size:25px; color:var(--two); text-transform:uppercase; }
-    
-    h2 { font-weight:900; font-family:"Playfair Display"; text-transform:uppercase; text-align:center; color:var(--three); font-size:16px; } h2 b, h2 i { font-family:"Playfair Display"; text-transform:uppercase; font-size:16px; } h2 span { font-family:'Poppins'; font-size:13px; font-weight:500; text-transform:lowercase; letter-spacing:.5px;}
-    
-    b, strong {font-family:"Playfair Display"; font-weight:900; font-style:italic; color:var(--one); font-size:13.5px;}
-    
-    i, em { color:var(--three);}
-    
-
-ul, ol { list-style:none; margin-left:-30px;}
-   
-ol li:before {font-weight: 900; content:'\f00c'; margin-right:10px; font-size:9px; color:var(--three); }
-   
-ul li:before { font-weight: 900;  content:'⸻'; margin-right:10px; font-size:9px; color:var(--two); }
-      
-      hr { width:150px; margin:0 auto; margin-top:25px; margin-bottom:25px; text-align:center; float:center; border-width: 5px 0px 0px 0px; border-style: solid; border-color:var(--background); }
-      
       .more { font-family:'Playfair Display'; text-transform:uppercase; text-align:center; padding:15px; background:var(--two); color:var(--borders); margin:25px 0px; width:450px; box-sizing:border-box;}
       
       .more:hover { background:var(--three); transition:2s all linear; cursor:pointer; }
-    
-    body { font-family:'Poppins', sans-serif; font-size:12px; font-weight:300; letter-spacing:1px; line-height:200%; color:var(--text); text-align:justify; background:var(--background); background-image:url({image:Background}); background-position:top left; background-attachment:fixed; background-size:cover;  }
 
 
 
@@ -190,7 +151,7 @@ button { background:transparent; color:var(--three); padding:0px; margin:0px; ou
 
 .name { margin-top:175px; width:350px; text-align:center; font-family:'Playfair Display'; text-transform:lowercase; font-weight:normal; font-style:italic; color:var(--three); font-size:18px; line-height:100%;} .name span { font-family:"Poppins"; font-size:12px; color:var(--text); text-transform:lowercase; font-style:normal; font-weight:300; } #details { padding:10px 25px; margin-top:10px; width:300px; height:105px; text-align:justify; overflow:auto;} #details::-webkit-scrollbar { width:0px; }
 
-.filters { position:fixed;text-align:center; overflow:auto;background:var(--background-alt);box-sizing:border-box; padding:25px; padding-left:32.5px; width:250px;top:0;left:0;text-align:left; }  .button-group { margin-top:25px;display:inline-block; }
+.filters { position:fixed;text-align:center; overflow:auto;background:var(--background-alt);box-sizing:border-box; padding:25px; padding-left:32.5px; width:250px;top:10%;left:0;text-align:left; }  .button-group { margin-top:25px;display:inline-block; }
 
 
 #sugarhoney { position:fixed; bottom:0; right:0;  margin:15px;} #sugarhoney a { border:none; color:{color:Accent One};}
