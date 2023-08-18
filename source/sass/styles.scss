@@ -337,12 +337,12 @@ main {
             content: '\f3cd';
         }
     
-        .type--thread &::before {
+        .type--thread &::before, {
             content: '\f02d';
         }
     
-        .type--oneshot &::before {
-            content: '\f8c4';
+        .type--event &::before {
+            content: '\e31a';
         }
 
         .status--mine &,
