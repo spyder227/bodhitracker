@@ -312,8 +312,8 @@ main {
     content: '\f3cd'; }
   .type--thread .thread--wrap::before {
     content: '\f02d'; }
-  .type--oneshot .thread--wrap::before {
-    content: '\f8c4'; }
+  .type--event .thread--wrap::before {
+    content: '\e31a'; }
   .status--mine .thread--wrap,
   .status--start .thread--wrap {
     background: var(--bg-accent);
