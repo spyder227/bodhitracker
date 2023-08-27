@@ -268,8 +268,8 @@ function populatePage(array, siteObject) {
     partners.forEach(partner => {
           document.querySelector('.tracker--partners').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".partner--${partner.split('#')[0].replaceAll(' ', '').toLowerCase().trim()}"/>${partner.split('#')[0]}</label>`);
     });
-    featuring.forEach(partner => {
-          document.querySelector('.tracker--featuring').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".feasturing--${featuring.split('#')[0].replaceAll(' ', '').toLowerCase().trim()}"/>${featuring.split('#')[0]}</label>`);
+    feature.forEach(partner => {
+          document.querySelector('.tracker--feature').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".featuring--${featuring.split('#')[0].replaceAll(' ', '').toLowerCase().trim()}"/>${featuring.split('#')[0]}</label>`);
     });
 }
 function debounce(fn, threshold) {
