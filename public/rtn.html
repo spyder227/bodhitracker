@@ -58,7 +58,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="./rtn.html" class="current">Remember The Name</a>
+                    <a href="./rtn.html"class="current">Remember The Name</a>
                     <ul>
                     <li><a href="./rtn.html">Thread List</a></li>
                     <li><a href="./rtn-charts.html">Statistics</a></li>
@@ -85,8 +85,8 @@
                         </div>
                     </div>
                     <div class="tracker--filter">
-                        <b>Featuring</b>
-                        <div class="tracker--filter-group claim--labels tracker--featuring" data-filter-group="featuring">
+                        <b>Partner</b>
+                        <div class="tracker--filter-group claim--labels tracker--partners" data-filter-group="partner">
                             <label class="all is-checked"><input type="checkbox" class="all" value="" checked="">all</label>
                         </div>
                     </div>
@@ -112,6 +112,14 @@
                             <label class="completed-label"><input type="checkbox" value=".status--complete">completed</label>
                         </div>
                     </div>
+                    <div class="tracker--filter">
+                        <b>Thread Type</b>
+                        <div class="tracker--filter-group claim--labels" data-filter-group="type">
+                            <label class="all is-checked"><input type="checkbox" class="all" value="" checked="">all</label>
+                            <label><input type="checkbox" value=".type--thread">thread</label>
+                            <label><input type="checkbox" value=".type--comm">comm</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="tracker--content">
                     <div id="tracker--rows" class="tracker--threads"></div>
@@ -119,7 +127,7 @@
             </div>
             <script>
                 //set overall variables
-                let siteName = 'remember the name';
+                let siteName = 'Corson Forever';
 
                 //set class variables
                 let $container = $('#tracker--rows');
