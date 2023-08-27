@@ -58,7 +58,7 @@ function getDelay(date) {
     }
     return delayClass;
 }
-function formatThread(site, siteURL, status, character, feature, title, threadID, icDate, partnerObjects, type, lastPost, delayClass, directoryString) {
+function formatThread(site, siteURL, status, character, featuring, title, threadID, icDate, partnerObjects, type, lastPost, delayClass, directoryString) {
     //set writing partners
     let partners = ``;
     let partnerClasses = ``;
@@ -79,10 +79,10 @@ function formatThread(site, siteURL, status, character, feature, title, threadID
         }
     });
 
-    //set featured characters
+    //set featuringd characters
     let featuring = ``;
-    console.log(feature);
-    let ftObjects = feature.split('+').map(character => JSON.parse(character));
+    console.log(featuring);
+    let ftObjects = featuring.split('+').map(character => JSON.parse(character));
     ftObjects.forEach((character, i) => {
         if(ftObjects.length === (i + 1) && ftObjects.length !== 1) {
             featuring += ` and `;
@@ -98,7 +98,7 @@ function formatThread(site, siteURL, status, character, feature, title, threadID
     let html = `<div class="thread lux-track grid-item status--${status} ${character.split(' ')[0]} delay--${delayClass} type--${type.split(' ')[0]} ${partnerClasses} grid-item"><div class="thread--wrap">
         <a class="thread--character" href="${siteURL}/?showuser=${character.split('#')[1]}">${character.split('#')[0]}</a>
         <a href="${siteURL}/?showtopic=${threadID}&view=getnewpost" target="_blank" class="thread--title">${title}</a>
-        <span class="thread--feature">ft. ${featuring}</span>
+        <span class="thread--featuring">ft. ${featuring}</span>
         <span class="thread--partners">Writing with ${partners}</span>
         <span class="thread--ic-date">Set <span>${icDate}</span></span>
         <span class="thread--last-post">Last Active <span>${lastPost}</span></span>
@@ -198,14 +198,14 @@ function addThread(e) {
         });
         let partner = partnerObjects.join('+');
 
-        let featured = document.querySelectorAll('.featuring select');
+        let featuringd = document.querySelectorAll('.featuring select');
         let ftObjects = [];
-        featured.forEach(ftObj => {
-            let feature = {
+        featuringd.forEach(ftObj => {
+            let featuring = {
                 character: ftObj.options[ftObj.selectedIndex].innerText.toLowerCase().trim(),
                 id: ftObj.options[ftObj.selectedIndex].value.toLowerCase().trim()
             }
-            ftObjects.push(JSON.stringify(feature));
+            ftObjects.push(JSON.stringify(featuring));
         });
         let featuring = ftObjects.join('+');
 
@@ -268,8 +268,8 @@ function populatePage(array, siteObject) {
     partners.forEach(partner => {
           document.querySelector('.tracker--partners').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".partner--${partner.split('#')[0].replaceAll(' ', '').toLowerCase().trim()}"/>${partner.split('#')[0]}</label>`);
     });
-    feature.forEach(partner => {
-          document.querySelector('.tracker--feature').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".featuring--${featuring.split('#')[0].replaceAll(' ', '').toLowerCase().trim()}"/>${featuring.split('#')[0]}</label>`);
+    featuring.forEach(featuring => {
+          document.querySelector('.tracker--featuring').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".featuring--${featuring.split('#')[0].replaceAll(' ', '').toLowerCase().trim()}"/>${featuring.split('#')[0]}</label>`);
     });
 }
 function debounce(fn, threshold) {
@@ -470,19 +470,19 @@ function prepThreads(data, site) {
     });
     return threads;
 }
-function fillThreadForm(siteData, characterData, featureData, form) {
+function fillThreadForm(siteData, characterData, featuringData, form) {
     let siteList = form.querySelector('#site');
     fillSiteSelect(siteData, form);
     let characterList = document.querySelector('#character');
     let partnerLists = document.querySelectorAll('.partner select');
     localStorage.setItem('partnerList', '');
     localStorage.setItem('siteName', '');
-    localStorage.setItem('featureData', '');
+    localStorage.setItem('featuringData', '');
 
     siteList.addEventListener('change', e => {
         let siteName = e.currentTarget.options[e.currentTarget.selectedIndex].value.toLowerCase().trim();
         let characters = characterData.filter(item => item.Site.toLowerCase().trim() === siteName);
-        let partners = featureData.filter(item => item.Site.toLowerCase().trim() === siteName);
+        let partners = featuringData.filter(item => item.Site.toLowerCase().trim() === siteName);
         let uniquePartners = [];
         partners.forEach(partner => {
             let partnerObject = {
@@ -528,15 +528,15 @@ function fillThreadForm(siteData, characterData, featureData, form) {
         partnerLists.forEach(partnerList => partnerList.innerHTML = partnerHTML);
         localStorage.setItem('partnerList', partnerHTML);
         localStorage.setItem('siteName', siteName);
-        localStorage.setItem('featureData', JSON.stringify(featureData.map(data => JSON.stringify(data))));
+        localStorage.setItem('featuringData', JSON.stringify(featuringData.map(data => JSON.stringify(data))));
     });
 
     partnerLists.forEach(partnerList => {
         partnerList.addEventListener('change', e => {
             let siteName = siteList.options[siteList.selectedIndex].value.toLowerCase().trim();
             let partnerName = e.currentTarget.options[e.currentTarget.selectedIndex].innerText.toLowerCase().trim();
-            let featureOptions = featureData.filter(item => item.Site.toLowerCase().trim() === siteName && item.Writer.toLowerCase().trim() === partnerName);
-            featureOptions.sort((a, b) => {
+            let featuringOptions = featuringData.filter(item => item.Site.toLowerCase().trim() === siteName && item.Writer.toLowerCase().trim() === partnerName);
+            featuringOptions.sort((a, b) => {
                 if (a.Character < b.Character) {
                     return -1;
                 } else if (a.Character > b.Character) {
@@ -546,10 +546,10 @@ function fillThreadForm(siteData, characterData, featureData, form) {
                 }
             });
     
-            let featureHTML = `<option value="">(select)</option>`;
-            featureHTML += featureOptions.map(item => `<option value="${item.CharacterID}">${capitalize(item.Character)}</option>`);
-            let featureList = partnerList.parentNode.nextElementSibling.querySelector('select');
-            featureList.innerHTML = featureHTML;
+            let featuringHTML = `<option value="">(select)</option>`;
+            featuringHTML += featuringOptions.map(item => `<option value="${item.CharacterID}">${capitalize(item.Character)}</option>`);
+            let featuringList = partnerList.parentNode.nextElementSibling.querySelector('select');
+            featuringList.innerHTML = featuringHTML;
         });
     });
 }
@@ -593,12 +593,12 @@ function addSite(e) {
         'Directory': directory
     }, e);
 }
-function partnerCheck(featureData, form) {
+function partnerCheck(featuringData, form) {
     let partnerField = form.querySelector('#writer');
     partnerField.addEventListener('keyup', e => {
         let siteName = form.querySelector('#site').options[form.querySelector('#site').selectedIndex].value.toLowerCase().trim();
         let activePartner = partnerField.value.toLowerCase().trim();
-        let partner = featureData.filter(item => item.Site.toLowerCase().trim() === siteName && item.Writer.toLowerCase() === activePartner.toLowerCase())[0];
+        let partner = featuringData.filter(item => item.Site.toLowerCase().trim() === siteName && item.Writer.toLowerCase() === activePartner.toLowerCase())[0];
         if(partner) {
             form.querySelector('#writerID').value = partner.WriterID;
         } else {
