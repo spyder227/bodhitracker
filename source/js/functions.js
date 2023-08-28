@@ -58,7 +58,7 @@ function getDelay(date) {
     }
     return delayClass;
 }
-function formatThread(site, siteURL, status, character, featuring, title, threadID, icDate, partnerObjects, type, lastPost, delayClass, directoryString) {
+function formatThread(site, siteURL, status, character, feature, title, threadID, icDate, partnerObjects, type, lastPost, delayClass, directoryString) {
     //set writing partners
     let partners = ``;
     let partnerClasses = ``;
@@ -70,7 +70,7 @@ function formatThread(site, siteURL, status, character, featuring, title, thread
             partnerClasses += ` `;
         }
         partners += `<a href="${siteURL}/${directoryString}${partner.id.toLowerCase().trim()}">${partner.partner.toLowerCase().trim()}</a>`;
-        partnerClasses += `partner--${partner.partner.toLowerCase().trim().replaceAll(' ', '').toLowerCase().trim()}`;
+        partnerClasses += `partner--${partner.partner.toLowerCase().trim().replaceAll(' ', '')}`;
         if(partnerObjects.length !== (i + 1)) {
             partnerClasses += ` `;
             if(partnerObjects.length !== 2) {
@@ -79,10 +79,9 @@ function formatThread(site, siteURL, status, character, featuring, title, thread
         }
     });
 
-    //set featuringd characters
+    //set featured characters
     let featuring = ``;
-    console.log(featuring);
-    let ftObjects = featuring.split('+').map(character => JSON.parse(character));
+    let ftObjects = feature.split('+').map(character => JSON.parse(character));
     ftObjects.forEach((character, i) => {
         if(ftObjects.length === (i + 1) && ftObjects.length !== 1) {
             featuring += ` and `;
@@ -98,7 +97,7 @@ function formatThread(site, siteURL, status, character, featuring, title, thread
     let html = `<div class="thread lux-track grid-item status--${status} ${character.split(' ')[0]} delay--${delayClass} type--${type.split(' ')[0]} ${partnerClasses} grid-item"><div class="thread--wrap">
         <a class="thread--character" href="${siteURL}/?showuser=${character.split('#')[1]}">${character.split('#')[0]}</a>
         <a href="${siteURL}/?showtopic=${threadID}&view=getnewpost" target="_blank" class="thread--title">${title}</a>
-        <span class="thread--featuring">ft. ${featuring}</span>
+        <span class="thread--feature">ft. ${featuring}</span>
         <span class="thread--partners">Writing with ${partners}</span>
         <span class="thread--ic-date">Set <span>${icDate}</span></span>
         <span class="thread--last-post">Last Active <span>${lastPost}</span></span>
@@ -110,7 +109,7 @@ function formatThread(site, siteURL, status, character, featuring, title, thread
 
     return html;
 }
-function sendAjax(data, form = null) {
+function sendAjax(data, thread, form = null) {
     console.log('send ajax');
     $.ajax({
         url: `https://script.google.com/macros/s/AKfycbyhWkeLS1VlAMFP5mS9Omqax8BHjcUTkvWGdpQIHNy8iQsIKx59usD2KVrjy_JOTfi3/exec`,   
@@ -128,6 +127,16 @@ function sendAjax(data, form = null) {
             console.log('complete');
             if(form) {
                 form.originalTarget.querySelector('button[type="submit"]').innerText = 'Submit';
+            } else if(data.Status === 'Theirs') {
+                thread.classList.remove('status--mine');
+                thread.classList.remove('status--start');
+                thread.classList.add('status--theirs');
+                thread.querySelector('[data-status]').innerText = 'Change Status';
+            } else if(data.Status === 'Mine') {
+                thread.classList.remove('status--theirs');
+                thread.classList.remove('status--expecting');
+                thread.classList.add('status--mine');
+                thread.querySelector('[data-status]').innerText = 'Change Status';
             }
         }
     });
@@ -136,27 +145,23 @@ function changeStatus(e) {
     if(e.dataset.status === 'mine' || e.dataset.status === 'start') {
         e.dataset.status = 'theirs';
         let thread = e.parentNode.parentNode.parentNode;
-        thread.classList.remove('status--mine');
-        thread.classList.remove('status--start');
-        thread.classList.add('status--theirs');
+        thread.querySelector('[data-status]').innerText = 'Changing...';
         sendAjax({
             'SubmissionType': 'edit-thread',
             'ThreadID': e.dataset.id,
             'Site': e.dataset.site,
             'Status': 'Theirs'
-        });
+        }, thread);
     } else if(e.dataset.status === 'theirs' || e.dataset.status === 'planned') {
         e.dataset.status = 'mine';
         let thread = e.parentNode.parentNode.parentNode;
-        thread.classList.remove('status--theirs');
-        thread.classList.remove('status--expecting');
-        thread.classList.add('status--mine');
+        thread.querySelector('[data-status]').innerText = 'Changing...';
         sendAjax({
             'SubmissionType': 'edit-thread',
             'ThreadID': e.dataset.id,
             'Site': e.dataset.site,
             'Status': 'Mine'
-        });
+        }, thread);
     }
 }
 function markComplete(e) {
@@ -198,14 +203,14 @@ function addThread(e) {
         });
         let partner = partnerObjects.join('+');
 
-        let featuringd = document.querySelectorAll('.featuring select');
+        let featured = document.querySelectorAll('.featuring select');
         let ftObjects = [];
-        featuringd.forEach(ftObj => {
-            let featuring = {
+        featured.forEach(ftObj => {
+            let feature = {
                 character: ftObj.options[ftObj.selectedIndex].innerText.toLowerCase().trim(),
                 id: ftObj.options[ftObj.selectedIndex].value.toLowerCase().trim()
             }
-            ftObjects.push(JSON.stringify(featuring));
+            ftObjects.push(JSON.stringify(feature));
         });
         let featuring = ftObjects.join('+');
 
@@ -266,10 +271,7 @@ function populatePage(array, siteObject) {
         document.querySelector('.tracker--characters').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".${character.split(' ')[0]}"/>${character.split(' ')[0]}</label>`);
     });
     partners.forEach(partner => {
-          document.querySelector('.tracker--partners').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".partner--${partner.split('#')[0].replaceAll(' ', '').toLowerCase().trim()}"/>${partner.split('#')[0]}</label>`);
-    });
-    featuring.forEach(featuring => {
-          document.querySelector('.tracker--featuring').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".featuring--${featuring.split('#')[0].replaceAll(' ', '').toLowerCase().trim()}"/>${featuring.split('#')[0]}</label>`);
+        document.querySelector('.tracker--partners').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".partner--${partner.split('#')[0].replaceAll(' ', '')}"/>${partner.split('#')[0]}</label>`);
     });
 }
 function debounce(fn, threshold) {
@@ -470,19 +472,19 @@ function prepThreads(data, site) {
     });
     return threads;
 }
-function fillThreadForm(siteData, characterData, featuringData, form) {
+function fillThreadForm(siteData, characterData, featureData, form) {
     let siteList = form.querySelector('#site');
     fillSiteSelect(siteData, form);
     let characterList = document.querySelector('#character');
     let partnerLists = document.querySelectorAll('.partner select');
     localStorage.setItem('partnerList', '');
     localStorage.setItem('siteName', '');
-    localStorage.setItem('featuringData', '');
+    localStorage.setItem('featureData', '');
 
     siteList.addEventListener('change', e => {
         let siteName = e.currentTarget.options[e.currentTarget.selectedIndex].value.toLowerCase().trim();
         let characters = characterData.filter(item => item.Site.toLowerCase().trim() === siteName);
-        let partners = featuringData.filter(item => item.Site.toLowerCase().trim() === siteName);
+        let partners = featureData.filter(item => item.Site.toLowerCase().trim() === siteName);
         let uniquePartners = [];
         partners.forEach(partner => {
             let partnerObject = {
@@ -528,15 +530,15 @@ function fillThreadForm(siteData, characterData, featuringData, form) {
         partnerLists.forEach(partnerList => partnerList.innerHTML = partnerHTML);
         localStorage.setItem('partnerList', partnerHTML);
         localStorage.setItem('siteName', siteName);
-        localStorage.setItem('featuringData', JSON.stringify(featuringData.map(data => JSON.stringify(data))));
+        localStorage.setItem('featureData', JSON.stringify(featureData.map(data => JSON.stringify(data))));
     });
 
     partnerLists.forEach(partnerList => {
         partnerList.addEventListener('change', e => {
             let siteName = siteList.options[siteList.selectedIndex].value.toLowerCase().trim();
             let partnerName = e.currentTarget.options[e.currentTarget.selectedIndex].innerText.toLowerCase().trim();
-            let featuringOptions = featuringData.filter(item => item.Site.toLowerCase().trim() === siteName && item.Writer.toLowerCase().trim() === partnerName);
-            featuringOptions.sort((a, b) => {
+            let featureOptions = featureData.filter(item => item.Site.toLowerCase().trim() === siteName && item.Writer.toLowerCase().trim() === partnerName);
+            featureOptions.sort((a, b) => {
                 if (a.Character < b.Character) {
                     return -1;
                 } else if (a.Character > b.Character) {
@@ -546,10 +548,10 @@ function fillThreadForm(siteData, characterData, featuringData, form) {
                 }
             });
     
-            let featuringHTML = `<option value="">(select)</option>`;
-            featuringHTML += featuringOptions.map(item => `<option value="${item.CharacterID}">${capitalize(item.Character)}</option>`);
-            let featuringList = partnerList.parentNode.nextElementSibling.querySelector('select');
-            featuringList.innerHTML = featuringHTML;
+            let featureHTML = `<option value="">(select)</option>`;
+            featureHTML += featureOptions.map(item => `<option value="${item.CharacterID}">${capitalize(item.Character)}</option>`);
+            let featureList = partnerList.parentNode.nextElementSibling.querySelector('select');
+            featureList.innerHTML = featureHTML;
         });
     });
 }
@@ -593,12 +595,12 @@ function addSite(e) {
         'Directory': directory
     }, e);
 }
-function partnerCheck(featuringData, form) {
+function partnerCheck(featureData, form) {
     let partnerField = form.querySelector('#writer');
     partnerField.addEventListener('keyup', e => {
         let siteName = form.querySelector('#site').options[form.querySelector('#site').selectedIndex].value.toLowerCase().trim();
         let activePartner = partnerField.value.toLowerCase().trim();
-        let partner = featuringData.filter(item => item.Site.toLowerCase().trim() === siteName && item.Writer.toLowerCase() === activePartner.toLowerCase())[0];
+        let partner = featureData.filter(item => item.Site.toLowerCase().trim() === siteName && item.Writer.toLowerCase() === activePartner.toLowerCase())[0];
         if(partner) {
             form.querySelector('#writerID').value = partner.WriterID;
         } else {
