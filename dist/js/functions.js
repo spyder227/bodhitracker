@@ -70,7 +70,7 @@ function formatThread(site, siteURL, status, character, feature, title, threadID
             partnerClasses += ` `;
         }
         partners += `<a href="${siteURL}/${directoryString}${partner.id.toLowerCase().trim()}">${partner.partner.toLowerCase().trim()}</a>`;
-        partnerClasses += `partner--${partner.partner.toLowerCase().trim().replaceAll(' ', '').toLowerCase().trim()}`;
+        partnerClasses += `partner--${partner.partner.toLowerCase().trim().replaceAll(' ', '')}`;
         if(partnerObjects.length !== (i + 1)) {
             partnerClasses += ` `;
             if(partnerObjects.length !== 2) {
@@ -81,7 +81,6 @@ function formatThread(site, siteURL, status, character, feature, title, threadID
 
     //set featured characters
     let featuring = ``;
-    console.log(feature);
     let ftObjects = feature.split('+').map(character => JSON.parse(character));
     ftObjects.forEach((character, i) => {
         if(ftObjects.length === (i + 1) && ftObjects.length !== 1) {
@@ -110,7 +109,7 @@ function formatThread(site, siteURL, status, character, feature, title, threadID
 
     return html;
 }
-function sendAjax(data, form = null) {
+function sendAjax(data, thread, form = null) {
     console.log('send ajax');
     $.ajax({
         url: `https://script.google.com/macros/s/AKfycbyhWkeLS1VlAMFP5mS9Omqax8BHjcUTkvWGdpQIHNy8iQsIKx59usD2KVrjy_JOTfi3/exec`,   
@@ -128,6 +127,16 @@ function sendAjax(data, form = null) {
             console.log('complete');
             if(form) {
                 form.originalTarget.querySelector('button[type="submit"]').innerText = 'Submit';
+            } else if(data.Status === 'Theirs') {
+                thread.classList.remove('status--mine');
+                thread.classList.remove('status--start');
+                thread.classList.add('status--theirs');
+                thread.querySelector('[data-status]').innerText = 'Change Status';
+            } else if(data.Status === 'Mine') {
+                thread.classList.remove('status--theirs');
+                thread.classList.remove('status--expecting');
+                thread.classList.add('status--mine');
+                thread.querySelector('[data-status]').innerText = 'Change Status';
             }
         }
     });
@@ -136,27 +145,23 @@ function changeStatus(e) {
     if(e.dataset.status === 'mine' || e.dataset.status === 'start') {
         e.dataset.status = 'theirs';
         let thread = e.parentNode.parentNode.parentNode;
-        thread.classList.remove('status--mine');
-        thread.classList.remove('status--start');
-        thread.classList.add('status--theirs');
+        thread.querySelector('[data-status]').innerText = 'Changing...';
         sendAjax({
             'SubmissionType': 'edit-thread',
             'ThreadID': e.dataset.id,
             'Site': e.dataset.site,
             'Status': 'Theirs'
-        });
+        }, thread);
     } else if(e.dataset.status === 'theirs' || e.dataset.status === 'planned') {
         e.dataset.status = 'mine';
         let thread = e.parentNode.parentNode.parentNode;
-        thread.classList.remove('status--theirs');
-        thread.classList.remove('status--expecting');
-        thread.classList.add('status--mine');
+        thread.querySelector('[data-status]').innerText = 'Changing...';
         sendAjax({
             'SubmissionType': 'edit-thread',
             'ThreadID': e.dataset.id,
             'Site': e.dataset.site,
             'Status': 'Mine'
-        });
+        }, thread);
     }
 }
 function markComplete(e) {
@@ -266,7 +271,7 @@ function populatePage(array, siteObject) {
         document.querySelector('.tracker--characters').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".${character.split(' ')[0]}"/>${character.split(' ')[0]}</label>`);
     });
     partners.forEach(partner => {
-          document.querySelector('.tracker--partners').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".partner--${partner.split('#')[0].replaceAll(' ', '').toLowerCase().trim()}"/>${partner.split('#')[0]}</label>`);
+        document.querySelector('.tracker--partners').insertAdjacentHTML('beforeend', `<label><input type="checkbox" value=".partner--${partner.split('#')[0].replaceAll(' ', '')}"/>${partner.split('#')[0]}</label>`);
     });
 }
 function debounce(fn, threshold) {
