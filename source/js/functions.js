@@ -138,12 +138,12 @@ function sendAjax(data, thread, form = null, complete = null) {
                 thread.classList.remove('status--mine');
                 thread.classList.remove('status--start');
                 thread.classList.add('status--theirs');
-                thread.querySelector('[data-status]').innerText = 'Change Status';
+                thread.querySelector('[data-status]').innerText = 'Change Turn';
             } else if(data.Status === 'Mine') {
                 thread.classList.remove('status--theirs');
                 thread.classList.remove('status--expecting');
                 thread.classList.add('status--mine');
-                thread.querySelector('[data-status]').innerText = 'Change Status';
+                thread.querySelector('[data-status]').innerText = 'Change Turn';
             }
         }
     });
