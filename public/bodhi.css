@@ -1,3 +1,7 @@
-.bodhi.lux-track {
-    --accent: #000000;
+.NAME.lux-track {
+    --accent: rgba(COLOR);
+}
+
+.alireza.lux-track {
+    --accent: rgba(156, 52, 45);
 }
