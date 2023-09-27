@@ -1,7 +1,115 @@
-.NAME.lux-track {
-    --accent: rgba(COLOR);
-}
-
 .alireza.lux-track {
     --accent: rgba(156, 52, 45);
+}
+
+.archer.lux-track {
+    --accent: rgba(104, 128, 148);
+}
+
+.brightkin.lux-track {
+    --accent: rgba(214, 77, 207);
+}
+
+.carter.lux-track {
+    --accent: rgba(222, 176, 24);
+}
+
+.clement.lux-track {
+    --accent: rgba(26, 73, 135);
+}
+
+.colm.lux-track {
+    --accent: rgba(135, 26, 50);
+}
+
+.darryl.lux-track {
+    --accent: rgba(103, 74, 125);
+}
+
+.david.lux-track {
+    --accent: rgba(54, 62, 107);
+}
+
+.dean.lux-track {
+    --accent: rgba(31, 54, 47);
+}
+
+.elisha.lux-track {
+    --accent: rgba(115, 151, 235);
+}
+
+.finn.lux-track {
+    --accent: rgba(17, 181, 186);
+}
+
+.grant.lux-track {
+    --accent: rgba(93, 88, 122);
+}
+
+.gunnar.lux-track {
+    --accent: rgba(80, 173, 97);
+}
+
+.hunter.lux-track {
+    --accent: rgba(222, 145, 29);
+}
+
+.james.lux-track {
+    --accent: rgba(159, 207, 188);
+}
+
+.kaneko.lux-track {
+    --accent: rgba(235, 176, 176);
+}
+
+.kidlat.lux-track {
+    --accent: rgba(33, 162, 191);
+}
+
+.luciano.lux-track {
+    --accent: rgba(54, 24, 71);
+}
+
+.mack.lux-track {
+    --accent: rgba(48, 191, 172);
+}
+
+.monroe.lux-track {
+    --accent: rgba(255, 195, 166);
+}
+
+.nanouk.lux-track {
+    --accent: rgba(181, 104, 36);
+}
+
+.rip.lux-track {
+    --accent: rgba(171, 83, 70);
+}
+
+.seth.lux-track {
+    --accent: rgba(28, 29, 46);
+}
+
+.taurai.lux-track {
+    --accent: rgba(78, 150, 6);
+}
+
+.tyler.lux-track {
+    --accent: rgba(212, 17, 150);
+}
+
+.tane.lux-track {
+    --accent: rgba(237, 212, 21);
+}
+
+.valerius.lux-track {
+    --accent: rgba(102, 30, 201);
+}
+
+.willow.lux-track {
+    --accent: rgba(21, 94, 48);
+}
+
+.xolotl.lux-track {
+    --accent: rgba(99, 88, 62);
 }
