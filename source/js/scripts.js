@@ -1,4 +1,4 @@
-const sheet = `https://docs.google.com/spreadsheets/d/1XxVPu8z9VHGfMVuS8oaoqT_r8CGLbvFlcSAJWyMARHg/edit?usp=sharing`;
+const sheet = `https://opensheet.elk.sh/1XxVPu8z9VHGfMVuS8oaoqT_r8CGLbvFlcSAJWyMARHg`;
 let threads = [];
 var filters = {};
 const typeSearch = `#quicksearch`;
